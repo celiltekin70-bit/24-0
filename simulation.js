@@ -9,7 +9,7 @@ const TIER_POWER = {
 export function runRace(playerSelection, database) {
   let gridResults = [];
 
-  // 1. Oyuncunun 5'li kombinasyonunun toplam gücünü hesapla
+  // 1. Oyuncu gücünü hesapla
   const playerBasePower = 
     TIER_POWER[playerSelection.driver.tier] +
     TIER_POWER[playerSelection.car.tier] +
@@ -17,9 +17,18 @@ export function runRace(playerSelection, database) {
     TIER_POWER[playerSelection.engineer.tier] +
     TIER_POWER[playerSelection.strategist.tier];
 
-  // Rastgele şans faktörü (-10 ile +5 arası)
-  const playerRng = Math.floor(Math.random() * 16) - 10;
-  const playerTotalScore = playerBasePower + playerRng;
+  // STRATEJİST BONUSU: 
+  // Eğer strategist S ise, şans aralığına +10 puan ekleyebilir (Düşük puanlıyı kurtarmak için)
+  const strategistBonus = (playerSelection.strategist.tier === 'S') ? 15 : 
+                          (playerSelection.strategist.tier === 'A') ? 8 : 0;
+
+  // DÜŞÜK PUANLILARA ŞANS: 
+  // Base power düşükse (örn: 300'ün altı), rastgelelik aralığını genişletiyoruz
+  const luckModifier = playerBasePower < 300 ? 15 : 0; 
+  
+  // Rastgele şans: Artık düşük puanlılar için daha yüksek bonus gelme ihtimali var
+  const playerRng = Math.floor(Math.random() * (16 + luckModifier)) - 10;
+  const playerTotalScore = playerBasePower + playerRng + strategistBonus;
 
   gridResults.push({
     name: playerSelection.driver.name,
@@ -28,7 +37,7 @@ export function runRace(playerSelection, database) {
     isPlayer: true
   });
 
-  // 2. 19 Yapay Zeka (AI) rakibi tüm havuzdan rastgele oluştur
+  // 2. 19 Yapay Zeka rakibi
   for (let i = 0; i < 19; i++) {
     const aiDriver = database.drivers[Math.floor(Math.random() * database.drivers.length)];
     const aiCar = database.cars[Math.floor(Math.random() * database.cars.length)];
@@ -43,6 +52,7 @@ export function runRace(playerSelection, database) {
       TIER_POWER[aiEngineer.tier] +
       TIER_POWER[aiStrategist.tier];
 
+    // AI için sabit şans
     const aiRng = Math.floor(Math.random() * 16) - 10;
     const aiTotalScore = aiBasePower + aiRng;
 
@@ -54,10 +64,9 @@ export function runRace(playerSelection, database) {
     });
   }
 
-  // 3. Skorlara göre sırala (Büyükten küçüğe)
+  // 3. Sıralama
   gridResults.sort((a, b) => b.score - a.score);
   
-  // Oyuncunun kaçıncı olduğunu bul
   const playerPosition = gridResults.findIndex(p => p.isPlayer) + 1;
 
   return {
