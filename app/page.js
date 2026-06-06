@@ -39,7 +39,7 @@ export default function Home() {
     driver: [], car: [], principal: [], engineer: [], strategist: []
   });
   const [hasRolled, setHasRolled] = useState(false);
-  const [rollCount, setRollCount] = useState(0); // 3 hak sınırı için
+  const [jokerCount, setJokerCount] = useState(3);
   const [streak, setStreak] = useState(0);
   const [lastRaceResult, setLastRaceResult] = useState(null);
 
@@ -54,7 +54,8 @@ export default function Home() {
   };
 
   const handleRollDraft = () => {
-    if (rollCount >= 3) return;
+    if (jokerCount <= 0) return;
+
     setDraftOptions({
       driver: playerSelection.driver ? [] : getWeightedRandom(database.drivers),
       car: playerSelection.car ? [] : getWeightedRandom(database.cars),
@@ -63,7 +64,7 @@ export default function Home() {
       strategist: playerSelection.strategist ? [] : getWeightedRandom(database.strategists)
     });
     setHasRolled(true);
-    setRollCount(prev => prev + 1);
+    setJokerCount(prev => prev - 1);
   };
 
   const handleSelectCard = (type, item) => {
@@ -94,7 +95,7 @@ export default function Home() {
     setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
     setLastRaceResult(null);
     setHasRolled(false);
-    setRollCount(0); // Hakları sıfırla
+    setJokerCount(3); // Yeni yarışta 3 Joker
     setGameState('DRAFT');
   };
 
@@ -124,10 +125,10 @@ export default function Home() {
           <div>
             <button 
               onClick={handleRollDraft} 
-              disabled={rollCount >= 3}
-              className={`p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all ${rollCount >= 3 ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+              disabled={jokerCount <= 0}
+              className={`p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all ${jokerCount <= 0 ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
             >
-              {rollCount >= 8 ? "No More Rolls Left" : (hasRolled ? `Roll Again (${8 - rollCount} left)` : "Roll Draft (8 left)")}
+              {jokerCount <= 0 ? "No Jokers Left!" : (hasRolled ? `Reroll Options (${jokerCount} jokers left)` : "Start Draft (3 jokers)")}
             </button>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
