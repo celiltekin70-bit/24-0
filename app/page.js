@@ -119,12 +119,13 @@ export default function Home() {
     <main className="min-h-screen bg-gray-950 text-white p-4 md:p-8 font-sans">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-end border-b border-gray-800 pb-6 mb-8">
+          {/* YENİ SADE BAŞLIK */}
           <div>
-            <h2 className="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Career Mode</h2>
-            <h1 className="text-4xl font-black text-white italic tracking-tighter">GP Manager 24</h1>
+            <h1 className="text-5xl font-black text-white italic tracking-tighter">24 - 0</h1>
           </div>
+          
           <div className="text-right">
-            <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">Race Streak</span>
+            <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">Current Streak</span>
             <div className="bg-green-900/20 border border-green-500/50 px-6 py-2 rounded-lg">
               <span className="text-3xl font-black text-green-400">{streak}</span>
               <span className="text-green-600 font-bold ml-1">/ 24</span>
@@ -134,7 +135,6 @@ export default function Home() {
 
         {gameState === 'DRAFT' && (
           <div className="animate-in fade-in duration-300">
-            {/* Draft UI aynı... */}
              <div className="flex gap-2 mb-6">
               <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600 hover:bg-blue-700'}`}>
                 {!hasRolled ? "Initial Roll" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers!")}
@@ -170,7 +170,7 @@ export default function Home() {
         
         {gameState === 'RACING' && (
           <div className="animate-in fade-in duration-300">
-             {!lastRaceResult ? (
+            {!lastRaceResult ? (
               <button onClick={handleSimulateRace} className="bg-green-600 w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-green-500 transition-all">Start Race</button>
             ) : (
               <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl">
@@ -188,7 +188,6 @@ export default function Home() {
             <h2 className="text-5xl font-black text-white mb-4">
                {gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}
             </h2>
-            {/* İLERLEME GÖSTERGESİ */}
             <p className="text-gray-400 mb-8 font-bold text-xl uppercase tracking-widest">
                Race Streak: {streak} / 24
             </p>
