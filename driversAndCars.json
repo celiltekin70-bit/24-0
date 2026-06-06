@@ -72,7 +72,7 @@
     { "id": 217, "name": "Gunther Steiner", "tier": "C" },
     { "id": 218, "name": "Otmar Szafnauer", "tier": "C" },
     { "id": 219, "name": "Cyril Abiteboul", "tier": "C" },
-    { "id": 220, "name": "Mattia Binotto (Principal)", "tier": "C" },
+    { "id": 220, "name": "Mattia Binotto (Principal)", "tier": "C" }
   ],
   "engineers": [
     { "id": 301, "name": "Adrian Newey", "tier": "S" },
