@@ -66,12 +66,15 @@ export default function Home() {
   const handleSelectCard = (type, item) => {
     const updatedSelection = { ...playerSelection, [type]: item };
     setPlayerSelection(updatedSelection);
-    setHasRolled(false);
-    setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
-
+    
+    // Tüm slotlar doldu mu kontrolü
     if (Object.values(updatedSelection).every(val => val !== null)) {
       setGameState('RACING');
-      setLastRaceResult(null);
+      setHasRolled(false);
+      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+    } else {
+      // Bir kart seçince o tipin seçeneklerini temizle ama draft modunda kal
+      setDraftOptions(prev => ({ ...prev, [type]: [] }));
     }
   };
 
@@ -79,21 +82,23 @@ export default function Home() {
     const result = runRace(playerSelection, database);
     setLastRaceResult(result);
     if (result.position === 1) {
-      const nextStreak = streak + 1;
-      setStreak(nextStreak);
-      if (nextStreak === 24) setGameState('VICTORY');
+      setStreak(prev => prev + 1);
+      if (streak + 1 >= 24) setGameState('VICTORY');
     } else {
       setGameState('GAMEOVER');
     }
   };
 
-  const handleResetGame = () => {
+  const handleResetForNextRace = () => {
     setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
-    setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
-    setHasRolled(false);
-    setStreak(0);
     setLastRaceResult(null);
+    setHasRolled(false);
     setGameState('DRAFT');
+  };
+
+  const handleResetGame = () => {
+    setStreak(0);
+    handleResetForNextRace();
   };
 
   return (
@@ -159,23 +164,18 @@ export default function Home() {
                     <span className="text-gray-500 text-xs">{pos.team}</span>
                   </div>
                 ))}
-                <button onClick={() => setGameState('DRAFT')} className="mt-6 w-full py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-700">Next Race</button>
+                <button onClick={handleResetForNextRace} className="mt-6 w-full py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-700">Next Race</button>
               </div>
             )}
           </div>
         )}
 
-        {gameState === 'GAMEOVER' && (
-          <div className="text-center py-20 bg-gray-900 rounded-3xl border border-red-900">
-            <h2 className="text-5xl font-black text-red-500 mb-4">GAME OVER</h2>
+        {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
+          <div className={`text-center py-20 bg-gray-900 rounded-3xl border ${gameState === 'GAMEOVER' ? 'border-red-900' : 'border-yellow-500'}`}>
+            <h2 className={`text-5xl font-black ${gameState === 'GAMEOVER' ? 'text-red-500' : 'text-yellow-500'} mb-4`}>
+              {gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}
+            </h2>
             <button onClick={handleResetGame} className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-200">Restart Career</button>
-          </div>
-        )}
-
-        {gameState === 'VICTORY' && (
-          <div className="text-center py-20 bg-gray-900 rounded-3xl border border-yellow-500">
-            <h2 className="text-5xl font-black text-yellow-500 mb-4">CHAMPION!</h2>
-            <button onClick={handleResetGame} className="bg-yellow-500 text-black px-8 py-4 rounded-xl font-bold hover:bg-yellow-400">Restart New Era</button>
           </div>
         )}
       </div>
