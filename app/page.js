@@ -14,7 +14,7 @@ const LABELS = {
 // İstediğin renk paleti: S:Koyu Yeşil, A:Yeşil, B:Sarı, C:Turuncu, D:Kırmızı
 const getTierColors = (tier) => {
   switch (tier) {
-    case 'S': return 'bg-purple-900/50 text-emerald-400 border-purple-500/50';
+    case 'S': return 'bg-purple-900/50 text-purple-400 border-purple-500/50';
     case 'A': return 'bg-green-500/20 text-green-400 border-green-500/50';
     case 'B': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
     case 'C': return 'bg-orange-500/20 text-orange-400 border-orange-500/50';
