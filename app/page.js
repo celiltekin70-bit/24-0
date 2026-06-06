@@ -72,10 +72,8 @@ export default function Home() {
     const updatedSelection = { ...playerSelection, [type]: item };
     setPlayerSelection(updatedSelection);
     
-    // Seçilen tipi boşalt
     let nextDraftOptions = { ...draftOptions, [type]: [] };
 
-    // Eğer tüm slotlar dolmadıysa, boş olanları tazele
     if (!Object.values(updatedSelection).every(val => val !== null)) {
       Object.keys(nextDraftOptions).forEach(key => {
         if (!updatedSelection[key]) {
@@ -93,21 +91,26 @@ export default function Home() {
   const handleSimulateRace = () => {
     const result = runRace(playerSelection, database);
     setLastRaceResult(result);
+    
     if (result.position === 1) {
       setStreak(prev => prev + 1);
-      if (streak + 1 >= 24) setGameState('VICTORY');
     } else {
       setGameState('GAMEOVER');
     }
   };
 
   const handleResetForNextRace = () => {
-    setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
-    setLastRaceResult(null);
-    setHasRolled(false);
-    setJokerCount(3);
-    setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
-    setGameState('DRAFT');
+    // 24 yarış galibiyet kontrolü
+    if (streak >= 24) {
+      setGameState('VICTORY');
+    } else {
+      setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
+      setLastRaceResult(null);
+      setHasRolled(false);
+      setJokerCount(3);
+      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+      setGameState('DRAFT');
+    }
   };
 
   const handleResetGame = () => {
