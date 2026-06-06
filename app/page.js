@@ -83,6 +83,13 @@ export default function Home() {
     }
   };
 
+  const handleRestartDraft = () => {
+    setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
+    setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+    setHasRolled(false);
+    setJokerCount(3);
+  };
+
   const handleSimulateRace = () => {
     const result = runRace(playerSelection, database);
     setLastRaceResult(result);
@@ -93,12 +100,11 @@ export default function Home() {
     }
   };
 
-  // BURASI: Yarış sonucunu temizle ama seçimleri silme, böylece aynı kadroyla devam et.
   const handleNextRace = () => {
     if (streak >= 24) {
       setGameState('VICTORY');
     } else {
-      setLastRaceResult(null); // Sadece yarış sonucu temizlenir, kadro kalır.
+      setLastRaceResult(null);
     }
   };
 
@@ -131,9 +137,13 @@ export default function Home() {
 
         {gameState === 'DRAFT' && (
           <div>
-            <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600'}`}>
-              {!hasRolled ? "Initial Roll (Free)" : (jokerCount > 0 ? `Use Joker to Reroll (${jokerCount} left)` : "No Jokers Left!")}
-            </button>
+            <div className="flex gap-2 mb-6">
+              <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                {!hasRolled ? "Initial Roll (Free)" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers Left!")}
+              </button>
+              <button onClick={handleRestartDraft} className="p-4 rounded-xl bg-red-900/30 border border-red-500/50 text-red-400 font-bold hover:bg-red-900/50 transition-all">Restart</button>
+            </div>
+            
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
                 <div key={slot} className="bg-gray-900 border border-gray-800 p-3 rounded-xl text-center">
@@ -144,6 +154,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            
             {hasRolled && (
               <div className="space-y-4">
                 {Object.keys(draftOptions).map((type) => (
@@ -162,19 +173,19 @@ export default function Home() {
         {gameState === 'RACING' && (
           <div className="space-y-6">
             {!lastRaceResult ? (
-              <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg hover:bg-green-700">Simulate Race</button>
+              <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg hover:bg-green-700 transition-all">Simulate Race</button>
             ) : (
               <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
                 <div className="mb-4 p-4 bg-gray-800 rounded-lg border border-red-500/30 text-center font-bold text-red-500 italic">"{getRaceMeme(lastRaceResult.position)}"</div>
-                <button onClick={handleNextRace} className="w-full py-2 bg-blue-600 rounded-lg font-bold">Next Race</button>
+                <button onClick={handleNextRace} className="w-full py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-700 transition-all">Next Race</button>
               </div>
             )}
           </div>
         )}
 
         {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
-          <div className="text-center py-20 bg-gray-900 rounded-3xl border border-red-900">
-            <h2 className="text-5xl font-black text-white mb-4">{gameState === 'GAMEOVER' ? 'GAME OVER' : 'YOU ARE CHAMPION!'}</h2>
+          <div className={`text-center py-20 bg-gray-900 rounded-3xl border ${gameState === 'GAMEOVER' ? 'border-red-900' : 'border-yellow-500'}`}>
+            <h2 className="text-5xl font-black text-white mb-4">{gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}</h2>
             <button onClick={handleResetGame} className="bg-white text-black px-8 py-4 rounded-xl font-bold">Restart Career</button>
           </div>
         )}
