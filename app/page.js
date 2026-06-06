@@ -72,19 +72,21 @@ export default function Home() {
     const updatedSelection = { ...playerSelection, [type]: item };
     setPlayerSelection(updatedSelection);
     
+    // Seçimi yaptıktan sonra seçenekleri temizle ve kalan boş slotları tazele
     let nextDraftOptions = { ...draftOptions, [type]: [] };
+    
+    const allFilled = Object.values(updatedSelection).every(val => val !== null);
 
-    if (!Object.values(updatedSelection).every(val => val !== null)) {
+    if (allFilled) {
+      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+      setGameState('RACING');
+    } else {
       Object.keys(nextDraftOptions).forEach(key => {
         if (!updatedSelection[key]) {
           nextDraftOptions[key] = getWeightedRandom(database[key + 's'] || database[key]);
         }
       });
       setDraftOptions(nextDraftOptions);
-    } else {
-      setGameState('RACING');
-      setHasRolled(false);
-      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
     }
   };
 
@@ -100,15 +102,14 @@ export default function Home() {
   };
 
   const handleResetForNextRace = () => {
-    // 24 yarış galibiyet kontrolü
     if (streak >= 24) {
       setGameState('VICTORY');
     } else {
       setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
+      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
       setLastRaceResult(null);
       setHasRolled(false);
       setJokerCount(3);
-      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
       setGameState('DRAFT');
     }
   };
@@ -174,8 +175,9 @@ export default function Home() {
         
         {gameState === 'RACING' && (
           <div className="space-y-6">
-            {!lastRaceResult && <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg hover:bg-green-700 transition-all">Simulate Race</button>}
-            {lastRaceResult && (
+            {!lastRaceResult ? (
+              <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg hover:bg-green-700 transition-all">Simulate Race</button>
+            ) : (
               <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
                 <div className="mb-4 p-4 bg-gray-800 rounded-lg border border-red-500/30 text-center font-bold text-red-500 italic">"{getRaceMeme(lastRaceResult.position)}"</div>
                 <h3 className="text-lg font-bold mb-4">Race Results</h3>
