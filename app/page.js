@@ -39,6 +39,7 @@ export default function Home() {
     driver: [], car: [], principal: [], engineer: [], strategist: []
   });
   const [hasRolled, setHasRolled] = useState(false);
+  const [rollCount, setRollCount] = useState(0); // 3 hak sınırı için
   const [streak, setStreak] = useState(0);
   const [lastRaceResult, setLastRaceResult] = useState(null);
 
@@ -53,6 +54,7 @@ export default function Home() {
   };
 
   const handleRollDraft = () => {
+    if (rollCount >= 3) return;
     setDraftOptions({
       driver: playerSelection.driver ? [] : getWeightedRandom(database.drivers),
       car: playerSelection.car ? [] : getWeightedRandom(database.cars),
@@ -61,19 +63,18 @@ export default function Home() {
       strategist: playerSelection.strategist ? [] : getWeightedRandom(database.strategists)
     });
     setHasRolled(true);
+    setRollCount(prev => prev + 1);
   };
 
   const handleSelectCard = (type, item) => {
     const updatedSelection = { ...playerSelection, [type]: item };
     setPlayerSelection(updatedSelection);
     
-    // Tüm slotlar doldu mu kontrolü
     if (Object.values(updatedSelection).every(val => val !== null)) {
       setGameState('RACING');
       setHasRolled(false);
       setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
     } else {
-      // Bir kart seçince o tipin seçeneklerini temizle ama draft modunda kal
       setDraftOptions(prev => ({ ...prev, [type]: [] }));
     }
   };
@@ -93,6 +94,7 @@ export default function Home() {
     setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
     setLastRaceResult(null);
     setHasRolled(false);
+    setRollCount(0); // Hakları sıfırla
     setGameState('DRAFT');
   };
 
@@ -120,8 +122,12 @@ export default function Home() {
 
         {gameState === 'DRAFT' && (
           <div>
-            <button onClick={handleRollDraft} className="bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all">
-              {hasRolled ? "Roll Again" : "Roll Draft"}
+            <button 
+              onClick={handleRollDraft} 
+              disabled={rollCount >= 3}
+              className={`p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all ${rollCount >= 3 ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+            >
+              {rollCount >= 3 ? "No More Rolls Left" : (hasRolled ? `Roll Again (${3 - rollCount} left)` : "Roll Draft (3 left)")}
             </button>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
