@@ -13,12 +13,12 @@ const LABELS = {
 
 const getTierColors = (tier) => {
   switch (tier) {
-    case 'S': return 'bg-red-100 text-red-700 border-red-200';
-    case 'A': return 'bg-red-100 text-red-700 border-red-200';
-    case 'B': return 'bg-red-50 text-red-600 border-red-200';
-    case 'C': return 'bg-red-50 text-red-600 border-red-200';
-    case 'D': return 'bg-gray-100 text-gray-600 border-gray-200';
-    default: return 'bg-gray-100 text-gray-700 border-gray-200';
+    case 'S': return 'bg-purple-900/50 text-purple-400 border-purple-500/50';
+    case 'A': return 'bg-green-500/20 text-green-400 border-green-500/50';
+    case 'B': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
+    case 'C': return 'bg-orange-500/20 text-orange-400 border-orange-500/50';
+    case 'D': return 'bg-red-500/20 text-red-400 border-red-500/50';
+    default: return 'bg-gray-800 text-gray-400 border-gray-700';
   }
 };
 
