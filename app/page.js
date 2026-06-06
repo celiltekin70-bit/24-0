@@ -42,7 +42,6 @@ export default function Home() {
   const [jokerCount, setJokerCount] = useState(3);
   const [streak, setStreak] = useState(0);
   const [lastRaceResult, setLastRaceResult] = useState(null);
-  const [isSimulating, setIsSimulating] = useState(false);
 
   const getWeightedRandom = (array) => {
     const weights = { 'S': 5, 'A': 15, 'B': 25, 'C': 30, 'D': 25 };
@@ -91,19 +90,15 @@ export default function Home() {
     setJokerCount(3);
   };
 
+  // Simülasyon ekranını kaldırdık, sonuç anında geliyor.
   const handleSimulateRace = () => {
-    setIsSimulating(true);
-    setTimeout(() => {
-      let result = runRace(playerSelection, database);
-      const luckFactor = Math.random();
-      if (streak < 5 && luckFactor > 0.4) result.position = 1;
+    let result = runRace(playerSelection, database);
+    const luckFactor = Math.random();
+    if (streak < 5 && luckFactor > 0.4) result.position = 1;
 
-      setLastRaceResult(result);
-      setIsSimulating(false);
-      
-      if (result.position !== 1) setGameState('GAMEOVER');
-      else setStreak(prev => prev + 1);
-    }, 1200); 
+    setLastRaceResult(result);
+    if (result.position !== 1) setGameState('GAMEOVER');
+    else setStreak(prev => prev + 1);
   };
 
   const handleNextRace = () => {
@@ -123,7 +118,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white p-4 md:p-8 font-sans">
-      <div className="max-w-6xl mx-auto transition-all duration-500">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-end border-b border-gray-800 pb-6 mb-8">
           <div>
             <h2 className="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Career Mode</h2>
@@ -139,12 +134,12 @@ export default function Home() {
         </div>
 
         {gameState === 'DRAFT' && (
-          <div className="animate-in fade-in duration-500">
+          <div className="animate-in fade-in duration-300">
             <div className="flex gap-2 mb-6">
-              <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all hover:scale-[1.01] active:scale-95 ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600'}`}>
-                {!hasRolled ? "Initial Roll (Free)" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers Left!")}
+              <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                {!hasRolled ? "Initial Roll" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers!")}
               </button>
-              <button onClick={handleRestartDraft} className="p-4 rounded-xl bg-red-900/30 border border-red-500/50 text-red-400 font-bold hover:bg-red-900/50 transition-all hover:scale-[1.02] active:scale-95">Restart</button>
+              <button onClick={handleRestartDraft} className="p-4 rounded-xl bg-red-900/30 border border-red-500/50 text-red-400 font-bold hover:bg-red-900/50">Restart</button>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
@@ -159,10 +154,10 @@ export default function Home() {
             </div>
             
             {hasRolled && (
-              <div className="space-y-4 animate-in slide-in-from-bottom-2 duration-300">
+              <div className="space-y-4">
                 {Object.keys(draftOptions).map((type) => (
                   draftOptions[type].length > 0 && (
-                    <button key={type} onClick={() => handleSelectCard(type, draftOptions[type][0])} className="w-full bg-gray-900 p-4 rounded-xl border border-gray-700 flex justify-between items-center hover:border-red-500 transition-all hover:translate-x-1">
+                    <button key={type} onClick={() => handleSelectCard(type, draftOptions[type][0])} className="w-full bg-gray-900 p-4 rounded-xl border border-gray-700 flex justify-between items-center hover:border-red-500 transition-all">
                       <span className="font-bold text-sm text-gray-400">{LABELS[type]}: {draftOptions[type][0].name || draftOptions[type][0].team}</span>
                       <span className={`text-[10px] px-2 py-1 rounded border font-black ${getTierColors(draftOptions[type][0].tier)}`}>{draftOptions[type][0].tier}</span>
                     </button>
@@ -174,28 +169,24 @@ export default function Home() {
         )}
         
         {gameState === 'RACING' && (
-          <div className="animate-in zoom-in-95 duration-500">
-            {isSimulating ? (
-              <div className="bg-gray-900 border border-gray-800 p-12 rounded-3xl text-center">
-                <div className="animate-pulse text-2xl font-black text-blue-500 uppercase tracking-widest">Simulating Race...</div>
-              </div>
-            ) : !lastRaceResult ? (
-              <button onClick={handleSimulateRace} className="bg-green-600 w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-green-500 hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-green-900/20">Start Race</button>
+          <div className="animate-in fade-in duration-300">
+            {!lastRaceResult ? (
+              <button onClick={handleSimulateRace} className="bg-green-600 w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-green-500 transition-all">Start Race</button>
             ) : (
-              <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl animate-in fade-in duration-300">
-                <div className="mb-6 p-6 bg-gray-800 rounded-2xl border border-red-500/30 text-center font-black text-2xl text-red-500 italic shadow-2xl">
+              <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl">
+                <div className="mb-6 p-6 bg-gray-800 rounded-2xl border border-red-500/30 text-center font-black text-xl text-red-500 italic">
                   "{getRaceMeme(lastRaceResult.position)}"
                 </div>
-                <button onClick={handleNextRace} className="w-full py-4 bg-blue-600 rounded-xl font-bold hover:bg-blue-500 hover:scale-[1.02] active:scale-95 transition-all">Next Race 🏁</button>
+                <button onClick={handleNextRace} className="w-full py-4 bg-blue-600 rounded-xl font-bold hover:bg-blue-500">Next Race 🏁</button>
               </div>
             )}
           </div>
         )}
 
         {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
-          <div className={`text-center py-20 bg-gray-900 rounded-3xl border ${gameState === 'GAMEOVER' ? 'border-red-900' : 'border-yellow-500'} animate-in zoom-in duration-500`}>
+          <div className="text-center py-20 bg-gray-900 rounded-3xl border border-red-900">
             <h2 className="text-5xl font-black text-white mb-4">{gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}</h2>
-            <button onClick={handleResetGame} className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-200 transition-all">Restart Career</button>
+            <button onClick={handleResetGame} className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-200">Restart Career</button>
           </div>
         )}
       </div>
