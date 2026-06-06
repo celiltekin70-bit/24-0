@@ -13,11 +13,11 @@ const LABELS = {
 
 const getTierColors = (tier) => {
   switch (tier) {
-    case 'S': return 'bg-purple-100 text-purple-700 border-purple-200';
-    case 'A': return 'bg-green-100 text-green-700 border-green-200';
-    case 'B': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-    case 'C': return 'bg-orange-100 text-orange-700 border-orange-200';
-    case 'D': return 'bg-red-100 text-red-700 border-red-200';
+    case 'S': return 'bg-red-100 text-red-700 border-red-200';
+    case 'A': return 'bg-red-100 text-red-700 border-red-200';
+    case 'B': return 'bg-red-50 text-red-600 border-red-200';
+    case 'C': return 'bg-red-50 text-red-600 border-red-200';
+    case 'D': return 'bg-gray-100 text-gray-600 border-gray-200';
     default: return 'bg-gray-100 text-gray-700 border-gray-200';
   }
 };
@@ -118,17 +118,17 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-gray-950 p-4 md:p-8 font-sans">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center border-b border-gray-200 pb-6 mb-8">
+        <div className="flex justify-between items-center border-b-2 border-red-200 pb-6 mb-8">
           <div className="flex items-center gap-4">
-            <img src="/image_e348c6.png" alt="Logo" className="h-16 w-auto" />
-            <h1 className="text-5xl font-black italic tracking-tighter">24 - 0</h1>
+            <img src="/image_e348c6.png" alt="Logo" className="h-16 w-auto" onError={(e) => e.target.style.display = 'none'} />
+            <h1 className="text-5xl font-black italic tracking-tighter text-red-600">24 - 0</h1>
           </div>
           
           <div className="text-right">
-            <span className="text-[10px] text-gray-400 uppercase font-bold block mb-1">Current Streak</span>
-            <div className="bg-gray-100 px-6 py-2 rounded-lg border border-gray-200">
-              <span className="text-3xl font-black text-green-600">{streak}</span>
-              <span className="text-gray-500 font-bold ml-1">/ 24</span>
+            <span className="text-[10px] text-red-400 uppercase font-bold block mb-1">Current Streak</span>
+            <div className="bg-red-50 px-6 py-2 rounded-lg border border-red-200">
+              <span className="text-3xl font-black text-red-600">{streak}</span>
+              <span className="text-red-400 font-bold ml-1">/ 24</span>
             </div>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function Home() {
         {gameState === 'DRAFT' && (
           <div className="animate-in fade-in duration-300">
             <div className="flex gap-2 mb-6">
-              <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
+              <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-100 text-gray-400' : 'bg-red-600 text-white hover:bg-red-700'}`}>
                 {!hasRolled ? "Initial Roll" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers!")}
               </button>
               <button onClick={handleRestartDraft} className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 font-bold hover:bg-red-100">Restart</button>
@@ -144,8 +144,8 @@ export default function Home() {
             
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
-                <div key={slot} className="bg-gray-50 border border-gray-200 p-3 rounded-xl text-center">
-                  <span className="text-[10px] text-gray-400 uppercase font-bold">{LABELS[slot]}</span>
+                <div key={slot} className="bg-gray-50 border border-red-100 p-3 rounded-xl text-center">
+                  <span className="text-[10px] text-red-400 uppercase font-bold">{LABELS[slot]}</span>
                   {playerSelection[slot] ? (
                     <><span className={`block text-[10px] px-2 py-0.5 rounded border font-black mt-2 ${getTierColors(playerSelection[slot].tier)}`}>{playerSelection[slot].tier}</span><p className="font-bold text-xs mt-1">{playerSelection[slot].name || playerSelection[slot].team}</p></>
                   ) : <p className="text-gray-300 text-xs mt-2">Empty</p>}
@@ -157,8 +157,8 @@ export default function Home() {
               <div className="space-y-4">
                 {Object.keys(draftOptions).map((type) => (
                   draftOptions[type].length > 0 && (
-                    <button key={type} onClick={() => handleSelectCard(type, draftOptions[type][0])} className="w-full bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center hover:border-gray-400 transition-all">
-                      <span className="font-bold text-sm text-gray-600">{LABELS[type]}: {draftOptions[type][0].name || draftOptions[type][0].team}</span>
+                    <button key={type} onClick={() => handleSelectCard(type, draftOptions[type][0])} className="w-full bg-white p-4 rounded-xl border border-red-200 flex justify-between items-center hover:border-red-400 transition-all">
+                      <span className="font-bold text-sm text-red-700">{LABELS[type]}: {draftOptions[type][0].name || draftOptions[type][0].team}</span>
                       <span className={`text-[10px] px-2 py-1 rounded border font-black ${getTierColors(draftOptions[type][0].tier)}`}>{draftOptions[type][0].tier}</span>
                     </button>
                   )
@@ -171,27 +171,27 @@ export default function Home() {
         {gameState === 'RACING' && (
           <div className="animate-in fade-in duration-300">
             {!lastRaceResult ? (
-              <button onClick={handleSimulateRace} className="bg-green-600 text-white w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-green-500 transition-all">Start Race</button>
+              <button onClick={handleSimulateRace} className="bg-red-600 text-white w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-red-500 transition-all">Start Race</button>
             ) : (
-              <div className="bg-gray-50 border border-gray-200 p-8 rounded-3xl">
+              <div className="bg-red-50 border border-red-200 p-8 rounded-3xl">
                 <div className="mb-6 p-6 bg-white rounded-2xl border border-red-200 text-center font-black text-xl text-red-600 italic">
                   "{getRaceMeme(lastRaceResult.position)}"
                 </div>
-                <button onClick={handleNextRace} className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500">Next Race 🏁</button>
+                <button onClick={handleNextRace} className="w-full py-4 bg-red-600 text-white rounded-xl font-bold hover:bg-red-500">Next Race 🏁</button>
               </div>
             )}
           </div>
         )}
 
         {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
-          <div className="text-center py-20 bg-gray-50 rounded-3xl border border-gray-200">
-            <h2 className="text-5xl font-black text-gray-950 mb-4">
+          <div className="text-center py-20 bg-red-50 rounded-3xl border border-red-200">
+            <h2 className="text-5xl font-black text-red-600 mb-4">
                {gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}
             </h2>
-            <p className="text-gray-500 mb-8 font-bold text-xl uppercase tracking-widest">
+            <p className="text-red-400 mb-8 font-bold text-xl uppercase tracking-widest">
                Race Streak: {streak} / 24
             </p>
-            <button onClick={handleResetGame} className="bg-gray-950 text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800">Restart Career</button>
+            <button onClick={handleResetGame} className="bg-red-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-700">Restart Career</button>
           </div>
         )}
       </div>
