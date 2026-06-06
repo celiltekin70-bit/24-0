@@ -73,6 +73,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-extrabold text-red-500 mb-6">24 - 0 | Streak: {streak}</h1>
         
+        {/* DRAFT EKRANI */}
         {gameState === 'DRAFT' && (
           <div>
             {!hasRolled && <button onClick={handleRollDraft} className="bg-red-600 p-4 rounded-xl font-bold uppercase mb-6 w-full">Roll Draft</button>}
@@ -115,8 +116,22 @@ export default function Home() {
           </div>
         )}
         
+        {/* YARIŞ EKRANI VE SONUÇLARI */}
         {gameState === 'RACING' && (
-          <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black">Simulate Race</button>
+          <div className="space-y-6">
+            <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg">Simulate Race</button>
+            {lastRaceResult && (
+              <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                <h3 className="text-lg font-bold mb-4">Race Results</h3>
+                {lastRaceResult.allResults?.slice(0, 5).map((pos, i) => (
+                  <div key={i} className={`p-3 rounded-lg mb-2 flex justify-between ${pos.isPlayer ? 'bg-red-900/30 border border-red-500' : 'bg-gray-950'}`}>
+                    <span>{i + 1}. {pos.isPlayer ? pos.name : "AI Driver"}</span>
+                    <span className="text-gray-500 text-xs">{pos.team}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         )}
       </div>
     </main>
