@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Image from 'next/image';
 import database from '../driversAndCars.json';
 import { runRace } from '../simulation';
 
@@ -120,7 +121,9 @@ export default function Home() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center border-b-2 border-red-200 pb-6 mb-8">
           <div className="flex items-center gap-4">
-            <img src="/image_e348c6.png" alt="Logo" className="h-16 w-auto" onError={(e) => e.target.style.display = 'none'} />
+            <div className="h-16 w-16 relative">
+               <Image src="/image_e348c6.png" alt="Logo" fill className="object-contain" />
+            </div>
             <h1 className="text-5xl font-black italic tracking-tighter text-red-600">24 - 0</h1>
           </div>
           
