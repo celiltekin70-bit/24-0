@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Buradan aşağısını ekle */
+@layer base {
+  body {
+    @apply text-base; 
+    overflow-x: hidden; /* Sayfanın sağa sola kaymasını engeller */
+    -webkit-tap-highlight-color: transparent; /* Mobil cihazlarda butona basınca çıkan o mavi kutuyu engeller */
+  }
+}
