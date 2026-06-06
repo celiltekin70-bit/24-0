@@ -90,7 +90,6 @@ export default function Home() {
     setJokerCount(3);
   };
 
-  // Simülasyon ekranını kaldırdık, sonuç anında geliyor.
   const handleSimulateRace = () => {
     let result = runRace(playerSelection, database);
     const luckFactor = Math.random();
@@ -101,9 +100,13 @@ export default function Home() {
     else setStreak(prev => prev + 1);
   };
 
+  // Butona basıldığı an bir sonraki yarış simüle edilir
   const handleNextRace = () => {
-    if (streak >= 24) setGameState('VICTORY');
-    else setLastRaceResult(null);
+    if (streak >= 24) {
+      setGameState('VICTORY');
+    } else {
+      handleSimulateRace();
+    }
   };
 
   const handleResetGame = () => {
