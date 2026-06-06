@@ -32,7 +32,7 @@
     { "id": 33, "name": "Logan Sargeant", "tier": "D" },
     { "id": 34, "name": "Nicholas Latifi", "tier": "D" },
     { "id": 35, "name": "Nikita Mazepin", "tier": "D" },
-    { "id": 36, "name": "Pastor Maldonado", "tier": "D" },
+    { "id": 36, "name": "Pastor Maldonado", "tier": "D" }
   ],
   "cars": [
     { "id": 101, "team": "Red Bull", "tier": "S" },
