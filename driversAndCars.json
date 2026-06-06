@@ -28,19 +28,11 @@
     { "id": 26, "name": "Esteban Ocon", "tier": "C" },
     { "id": 27, "name": "Nico Hulkenberg", "tier": "C" },
     { "id": 28, "name": "Mick Schumacher", "tier": "C" },
-    { "id": 29, "name": "Nyck de Vries", "tier": "C" },
-    { "id": 30, "name": "Jolyon Palmer", "tier": "C" },
-    { "id": 31, "name": "Marcus Ericsson", "tier": "C" },
     { "id": 32, "name": "Lance Stroll", "tier": "D" },
     { "id": 33, "name": "Logan Sargeant", "tier": "D" },
     { "id": 34, "name": "Nicholas Latifi", "tier": "D" },
     { "id": 35, "name": "Nikita Mazepin", "tier": "D" },
     { "id": 36, "name": "Pastor Maldonado", "tier": "D" },
-    { "id": 37, "name": "Taki Inoue", "tier": "D" },
-    { "id": 38, "name": "Yuji Ide", "tier": "D" },
-    { "id": 39, "name": "Luca Badoer (2009 Mode)", "tier": "D" },
-    { "id": 40, "name": "Alex Yoong", "tier": "D" },
-    { "id": 41, "name": "Ricardo Rosset", "tier": "D" }
   ],
   "cars": [
     { "id": 101, "team": "Red Bull", "tier": "S" },
@@ -81,8 +73,6 @@
     { "id": 218, "name": "Otmar Szafnauer", "tier": "C" },
     { "id": 219, "name": "Cyril Abiteboul", "tier": "C" },
     { "id": 220, "name": "Mattia Binotto (Principal)", "tier": "C" },
-    { "id": 221, "name": "Monisha Kaltenborn", "tier": "D" },
-    { "id": 222, "name": "Tony Fernandes", "tier": "D" }
   ],
   "engineers": [
     { "id": 301, "name": "Adrian Newey", "tier": "S" },
@@ -100,12 +90,10 @@
     { "id": 313, "name": "Enrico Cardile", "tier": "B" },
     { "id": 314, "name": "Jock Clear", "tier": "B" },
     { "id": 315, "name": "Simone Resta", "tier": "B" },
-    { "id": 316, "name": "David Sanchez", "tier": "B" },
     { "id": 317, "name": "Loic Serra", "tier": "B" },
     { "id": 318, "name": "James Key", "tier": "B" },
     { "id": 319, "name": "Pat Fry", "tier": "C" },
     { "id": 320, "name": "Mattia Binotto (Engine Dept)", "tier": "C" },
-    { "id": 321, "name": "Andrew Shovlin", "tier": "C" },
     { "id": 322, "name": "2019 Williams Aero Team", "tier": "D" }
   ],
   "strategists": [
