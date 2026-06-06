@@ -1,9 +1,9 @@
 const TIER_POWER = {
   "S": 95,
-  "A": 85,
-  "B": 75,
-  "C": 65,
-  "D": 55
+  "A": 90,
+  "B": 85,
+  "C": 80,
+  "D": 75
 };
 
 export function runRace(playerSelection, database) {
