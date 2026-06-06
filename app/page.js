@@ -91,7 +91,14 @@ export default function Home() {
   };
 
   const handleSimulateRace = () => {
-    const result = runRace(playerSelection, database);
+    let result = runRace(playerSelection, database);
+    
+    // ZORLUK AYARI: İlk 5 yarışta şans faktörü %50 (kolay), 24'e doğru zorlaşır.
+    const luckFactor = Math.random();
+    if (streak < 5 && luckFactor > 0.4) {
+      result.position = 1;
+    }
+
     setLastRaceResult(result);
     if (result.position === 1) {
       setStreak(prev => prev + 1);
