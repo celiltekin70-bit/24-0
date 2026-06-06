@@ -100,13 +100,9 @@ export default function Home() {
     else setStreak(prev => prev + 1);
   };
 
-  // Butona basıldığı an bir sonraki yarış simüle edilir
   const handleNextRace = () => {
-    if (streak >= 24) {
-      setGameState('VICTORY');
-    } else {
-      handleSimulateRace();
-    }
+    if (streak >= 24) setGameState('VICTORY');
+    else handleSimulateRace();
   };
 
   const handleResetGame = () => {
@@ -138,7 +134,8 @@ export default function Home() {
 
         {gameState === 'DRAFT' && (
           <div className="animate-in fade-in duration-300">
-            <div className="flex gap-2 mb-6">
+            {/* Draft UI aynı... */}
+             <div className="flex gap-2 mb-6">
               <button onClick={handleRollDraft} disabled={hasRolled && jokerCount <= 0} className={`flex-1 p-4 rounded-xl font-bold uppercase transition-all ${hasRolled && jokerCount <= 0 ? 'bg-gray-800 text-gray-500' : 'bg-blue-600 hover:bg-blue-700'}`}>
                 {!hasRolled ? "Initial Roll" : (jokerCount > 0 ? `Use Joker (${jokerCount})` : "No Jokers!")}
               </button>
@@ -173,7 +170,7 @@ export default function Home() {
         
         {gameState === 'RACING' && (
           <div className="animate-in fade-in duration-300">
-            {!lastRaceResult ? (
+             {!lastRaceResult ? (
               <button onClick={handleSimulateRace} className="bg-green-600 w-full py-8 rounded-2xl font-black uppercase text-2xl hover:bg-green-500 transition-all">Start Race</button>
             ) : (
               <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl">
@@ -188,7 +185,13 @@ export default function Home() {
 
         {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
           <div className="text-center py-20 bg-gray-900 rounded-3xl border border-red-900">
-            <h2 className="text-5xl font-black text-white mb-4">{gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}</h2>
+            <h2 className="text-5xl font-black text-white mb-4">
+               {gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}
+            </h2>
+            {/* İLERLEME GÖSTERGESİ */}
+            <p className="text-gray-400 mb-8 font-bold text-xl uppercase tracking-widest">
+               Race Streak: {streak} / 24
+            </p>
             <button onClick={handleResetGame} className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-200">Restart Career</button>
           </div>
         )}
