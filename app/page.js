@@ -83,12 +83,27 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-950 text-white p-4 md:p-8 font-sans">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-red-500 mb-6">24 - 0 | Streak: {streak}</h1>
+        
+        {/* Modern Streak Skor Tabelası */}
+        <div className="flex justify-between items-end border-b border-gray-800 pb-6 mb-8">
+          <div>
+            <h2 className="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Current Session</h2>
+            <h1 className="text-4xl font-black text-white italic tracking-tighter">24 - 0</h1>
+          </div>
+          
+          <div className="text-right">
+            <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">Race Streak</span>
+            <div className="bg-green-900/20 border border-green-500/50 px-6 py-2 rounded-lg">
+              <span className="text-3xl font-black text-green-400">{streak}</span>
+              <span className="text-green-600 font-bold ml-1">/ 24</span>
+            </div>
+          </div>
+        </div>
         
         {/* DRAFT EKRANI */}
         {gameState === 'DRAFT' && (
           <div>
-            {!hasRolled && <button onClick={handleRollDraft} className="bg-red-600 p-4 rounded-xl font-bold uppercase mb-6 w-full">Roll Draft</button>}
+            {!hasRolled && <button onClick={handleRollDraft} className="bg-red-600 hover:bg-red-700 p-4 rounded-xl font-bold uppercase mb-6 w-full">Roll Draft</button>}
             
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
@@ -131,7 +146,7 @@ export default function Home() {
         {/* YARIŞ SONUÇLARI */}
         {gameState === 'RACING' && (
           <div className="space-y-6">
-            <button onClick={handleSimulateRace} className="bg-green-600 w-full py-4 rounded-xl font-black uppercase text-lg">Simulate Race</button>
+            <button onClick={handleSimulateRace} className="bg-green-600 hover:bg-green-700 w-full py-4 rounded-xl font-black uppercase text-lg">Simulate Race</button>
             
             {lastRaceResult && (
               <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
