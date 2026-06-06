@@ -127,7 +127,7 @@ export default function Home() {
               disabled={rollCount >= 3}
               className={`p-4 rounded-xl font-bold uppercase mb-6 w-full transition-all ${rollCount >= 3 ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white'}`}
             >
-              {rollCount >= 3 ? "No More Rolls Left" : (hasRolled ? `Roll Again (${3 - rollCount} left)` : "Roll Draft (3 left)")}
+              {rollCount >= 8 ? "No More Rolls Left" : (hasRolled ? `Roll Again (${8 - rollCount} left)` : "Roll Draft (8 left)")}
             </button>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               {Object.keys(playerSelection).map((slot) => (
