@@ -32,7 +32,19 @@
     { "id": 33, "name": "Logan Sargeant", "tier": "D" },
     { "id": 34, "name": "Nicholas Latifi", "tier": "D" },
     { "id": 35, "name": "Nikita Mazepin", "tier": "D" },
-    { "id": 36, "name": "Pastor Maldonado", "tier": "D" }
+    { "id": 36, "name": "Pastor Maldonado", "tier": "D" },
+    { "id": 37, "name": "Daniil Kvyat", "tier": "D" },
+    { "id": 38, "name": "Kamui Kobayashi", "tier": "C" },
+    { "id": 39, "name": "Jenson Button", "tier": "A" },
+    { "id": 40, "name": "Ronnie Peterson", "tier": "B" },
+    { "id": 41, "name": "Guanyu Zhou", "tier": "D" },
+    { "id": 42, "name": "Rio Hayranto", "tier": "D" },
+    { "id": 43, "name": "Marcus Ericsson", "tier": "D" }
+    { "id": 44, "name": "Rubens Barrichello", "tier": "B" }
+    { "id": 45, "name": "Ralf Schumacher", "tier": "C" }
+    { "id": 46, "name": "Jim Clark", "tier": "A" }
+    { "id": 47, "name": "Bruce Mclaren", "tier": "B" }
+
   ],
   "cars": [
     { "id": 101, "team": "Red Bull", "tier": "S" },
