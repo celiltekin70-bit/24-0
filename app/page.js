@@ -92,23 +92,32 @@ export default function Home() {
     setJokerCount(3);
   };
 
-  const handleSimulateRace = () => {
+  // Yarış simülasyonunu çalıştıran ve durumları güncelleyen ortak yardımcı fonksiyon
+  const executeRaceSimulation = (currentStreak) => {
     let result = runRace(playerSelection, database);
     const luckFactor = Math.random();
-    if (streak < 5 && luckFactor > 0.4) result.position = 1;
+    if (currentStreak < 5 && luckFactor > 0.4) result.position = 1;
 
     setLastRaceResult(result);
-    if (result.position !== 1) setGameState('GAMEOVER');
-    else setStreak(prev => prev + 1);
+    
+    if (result.position !== 1) {
+      setGameState('GAMEOVER');
+    } else {
+      const nextStreak = currentStreak + 1;
+      setStreak(nextStreak);
+      if (nextStreak >= 24) {
+        setGameState('VICTORY');
+      }
+    }
+  };
+
+  const handleSimulateRace = () => {
+    executeRaceSimulation(streak);
   };
 
   const handleNextRace = () => {
-    if (streak >= 24) setGameState('VICTORY');
-    else {
-      // Kadro korunduğu için direkt yarış ekranına geçiş yapıyoruz
-      setLastRaceResult(null);
-      setGameState('RACING');
-    }
+    // "Next Race" denildiğinde start butonuna basılmış gibi direkt simülasyonu tetikliyoruz
+    executeRaceSimulation(streak);
   };
 
   const handleResetGame = () => {
