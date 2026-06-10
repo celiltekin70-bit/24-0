@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from 'react';
 import Image from 'next/image';
 import database from '../driversAndCars.json';
@@ -104,7 +105,7 @@ export default function Home() {
   const handleNextRace = () => {
     if (streak >= 24) setGameState('VICTORY');
     else {
-      // Bir sonraki yarış için kadro korunuyor, sadece draft ekranı/jokerler tazeleniyor
+      // Bir sonraki yarış için kadro korunuyor, sadece durum ve jokerler sıfırlanıyor
       setHasRolled(false);
       setJokerCount(3);
       setLastRaceResult(null);
@@ -122,7 +123,7 @@ export default function Home() {
     setGameState('DRAFT');
   };
 
-  // X (Twitter) Paylaşım Mantığı - GP Manager ibaresi kaldırıldı
+  // X (Twitter) Paylaşım Mantığı - GP Manager kısmı tamamen temizlendi
   const handleShareTwitter = () => {
     const status = gameState === 'VICTORY' ? "CHAMPION! 🏆" : "GAME OVER 🏎️";
     const driverName = playerSelection.driver?.name || "Unknown";
