@@ -103,7 +103,15 @@ export default function Home() {
 
   const handleNextRace = () => {
     if (streak >= 24) setGameState('VICTORY');
-    else handleSimulateRace();
+    else {
+      // Bir sonraki yarış için draft durumunu sıfırla
+      setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
+      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+      setHasRolled(false);
+      setJokerCount(3);
+      setLastRaceResult(null);
+      setGameState('DRAFT');
+    }
   };
 
   const handleResetGame = () => {
@@ -114,6 +122,18 @@ export default function Home() {
     setJokerCount(3);
     setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
     setGameState('DRAFT');
+  };
+
+  // X (Twitter) Paylaşım Mantığı
+  const handleShareTwitter = () => {
+    const status = gameState === 'VICTORY' ? "CHAMPION! 🏆" : "GAME OVER 🏎️";
+    const driverName = playerSelection.driver?.name || "Unknown";
+    const carName = playerSelection.car?.team || "Unknown";
+    
+    const text = `GP Manager - 24-0 Challenge\n\nResult: ${status}\nStreak: ${streak}/24\n🏁 Driver: ${driverName}\n🏎️ Car: ${carName}\n\nCan you beat my streak? Play now!`;
+    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    
+    window.open(shareUrl, '_blank');
   };
 
   return (
@@ -159,7 +179,7 @@ export default function Home() {
             {hasRolled && (
               <div className="space-y-4">
                 {Object.keys(draftOptions).map((type) => (
-                  draftOptions[type].length > 0 && (
+                  !playerSelection[type] && draftOptions[type].length > 0 && (
                     <button key={type} onClick={() => handleSelectCard(type, draftOptions[type][0])} className="w-full bg-white p-4 rounded-xl border border-gray-200 flex justify-between items-center hover:border-red-300 transition-all shadow-sm">
                       <span className="font-bold text-sm text-gray-700">{LABELS[type]}: {draftOptions[type][0].name || draftOptions[type][0].team}</span>
                       <span className={`text-[10px] px-2 py-1 rounded border font-black ${getTierColors(draftOptions[type][0].tier)}`}>{draftOptions[type][0].tier}</span>
@@ -187,14 +207,44 @@ export default function Home() {
         )}
 
         {(gameState === 'GAMEOVER' || gameState === 'VICTORY') && (
-          <div className="text-center py-20 bg-white rounded-3xl border border-gray-200 shadow-sm">
-            <h2 className="text-5xl font-black text-red-600 mb-4">
+          <div className="text-center py-12 px-4 bg-white rounded-3xl border border-gray-200 shadow-sm max-w-2xl mx-auto animate-in zoom-in-95 duration-300">
+            <h2 className="text-5xl font-black text-red-600 mb-2">
                {gameState === 'GAMEOVER' ? 'GAME OVER' : 'CHAMPION!'}
             </h2>
-            <p className="text-gray-500 mb-8 font-bold text-xl uppercase tracking-widest">
+            <p className="text-gray-500 mb-6 font-bold text-xl uppercase tracking-widest">
                Race Streak: {streak} / 24
             </p>
-            <button onClick={handleResetGame} className="bg-red-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-700 shadow-lg">Restart Career</button>
+
+            {/* Son Seçilen Kadro Özeti */}
+            <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-left mb-8">
+              <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">Your Last Lineup</h3>
+              <div className="space-y-2">
+                {Object.keys(playerSelection).map((slot) => (
+                  <div key={slot} className="flex justify-between items-center bg-white p-2.5 rounded-lg border border-gray-200 text-sm">
+                    <span className="font-medium text-gray-500">{LABELS[slot]}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-gray-800">{playerSelection[slot]?.name || playerSelection[slot]?.team}</span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded border font-black ${getTierColors(playerSelection[slot]?.tier)}`}>
+                        {playerSelection[slot]?.tier}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Buton Alanı */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onClick={handleResetGame} className="bg-red-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-700 shadow-md transition-all flex-1 sm:flex-none">
+                Restart Career
+              </button>
+              <button onClick={handleShareTwitter} className="bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-900 shadow-md transition-all flex items-center justify-center gap-2 flex-1 sm:flex-none">
+                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                </svg>
+                Share on X
+              </button>
+            </div>
           </div>
         )}
       </div>
