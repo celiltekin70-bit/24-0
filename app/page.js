@@ -105,11 +105,9 @@ export default function Home() {
   const handleNextRace = () => {
     if (streak >= 24) setGameState('VICTORY');
     else {
-      // Bir sonraki yarış için kadro korunuyor, sadece durum ve jokerler sıfırlanıyor
-      setHasRolled(false);
-      setJokerCount(3);
+      // Kadro korunduğu için direkt yarış ekranına geçiş yapıyoruz
       setLastRaceResult(null);
-      setGameState('DRAFT');
+      setGameState('RACING');
     }
   };
 
@@ -123,7 +121,6 @@ export default function Home() {
     setGameState('DRAFT');
   };
 
-  // X (Twitter) Paylaşım Mantığı - GP Manager kısmı tamamen temizlendi
   const handleShareTwitter = () => {
     const status = gameState === 'VICTORY' ? "CHAMPION! 🏆" : "GAME OVER 🏎️";
     const driverName = playerSelection.driver?.name || "Unknown";
@@ -214,7 +211,6 @@ export default function Home() {
                Race Streak: {streak} / 24
             </p>
 
-            {/* Son Seçilen Kadro Özeti */}
             <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-left mb-8">
               <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">Your Last Lineup</h3>
               <div className="space-y-2">
@@ -232,7 +228,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Buton Alanı */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button onClick={handleResetGame} className="bg-red-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-700 shadow-md transition-all flex-1 sm:flex-none">
                 Restart Career
