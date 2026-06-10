@@ -104,9 +104,7 @@ export default function Home() {
   const handleNextRace = () => {
     if (streak >= 24) setGameState('VICTORY');
     else {
-      // Bir sonraki yarış için draft durumunu sıfırla
-      setPlayerSelection({ driver: null, car: null, principal: null, engineer: null, strategist: null });
-      setDraftOptions({ driver: [], car: [], principal: [], engineer: [], strategist: [] });
+      // KADRO KORUNUYOR: Kadro sıfırlama satırları kaldırıldı
       setHasRolled(false);
       setJokerCount(3);
       setLastRaceResult(null);
@@ -124,7 +122,7 @@ export default function Home() {
     setGameState('DRAFT');
   };
 
-  // X (Twitter) Paylaşım Mantığı (GP Manager yazısı kaldırıldı)
+  // X (Twitter) Paylaşım Mantığı (GP Manager yazısı tamamen kaldırıldı)
   const handleShareTwitter = () => {
     const status = gameState === 'VICTORY' ? "CHAMPION! 🏆" : "GAME OVER 🏎️";
     const driverName = playerSelection.driver?.name || "Unknown";
