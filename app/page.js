@@ -124,13 +124,13 @@ export default function Home() {
     setGameState('DRAFT');
   };
 
-  // X (Twitter) Paylaşım Mantığı
+  // X (Twitter) Paylaşım Mantığı (GP Manager yazısı kaldırıldı)
   const handleShareTwitter = () => {
     const status = gameState === 'VICTORY' ? "CHAMPION! 🏆" : "GAME OVER 🏎️";
     const driverName = playerSelection.driver?.name || "Unknown";
     const carName = playerSelection.car?.team || "Unknown";
     
-    const text = `GP Manager - 24-0 Challenge\n\nResult: ${status}\nStreak: ${streak}/24\n🏁 Driver: ${driverName}\n🏎️ Car: ${carName}\n\nCan you beat my streak? Play now!`;
+    const text = `24-0 Challenge\n\nResult: ${status}\nStreak: ${streak}/24\n🏁 Driver: ${driverName}\n🏎️ Car: ${carName}\n\nCan you beat my streak? Play now!`;
     const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     
     window.open(shareUrl, '_blank');
